@@ -1,0 +1,294 @@
+_my_read_keypad:
+  begin
+//ergasia_part2.c,7 :: 		PORTD = 0xFF;                    //arxikopoiw ola ta podarakia tou D sto 1
+	PORTD <- 255
+//ergasia_part2.c,8 :: 		TRISD = 0xFF;                    //kanw to portD ws eisodo
+	TRISD <- 255
+//ergasia_part2.c,10 :: 		TRISB = 0x00;                    //kanw to portB ws eisodo
+	TRISB <- 0
+//ergasia_part2.c,11 :: 		PORTB = 0xFF;                    //arxikopoiw ola ta podarakia tou B sto 1
+	PORTB <- 255
+//ergasia_part2.c,13 :: 		key =0;
+	my_read_keypad_key_L0 <- 0
+//ergasia_part2.c,15 :: 		do {     //scan continuously until a key is pressed on the keypad.
+L_my_read_keypad_0:
+//ergasia_part2.c,18 :: 		PORTB.F0 = 0;
+	PORTB <-  PORTB & -2
+//ergasia_part2.c,19 :: 		delay_ms(1);
+	asm: MOVLW	3
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	150
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+//ergasia_part2.c,20 :: 		var = PORTD;
+	my_read_keypad_var_L0 <- PORTD
+//ergasia_part2.c,21 :: 		if (var.F0 == 0)      key = '<';
+	STACK_1 <-  my_read_keypad_var_L0 & 1
+	if ( STACK_1 != 0) then goto L_my_read_keypad_2
+	my_read_keypad_key_L0 <- 60
+	goto	L_my_read_keypad_3
+L_my_read_keypad_2:
+//ergasia_part2.c,22 :: 		else if (var.F1 == 0) key = '7';
+	STACK_1 <-  my_read_keypad_var_L0 & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_4
+	my_read_keypad_key_L0 <- 55
+	goto	L_my_read_keypad_5
+L_my_read_keypad_4:
+//ergasia_part2.c,23 :: 		else if (var.F2 == 0) key = '4';
+	STACK_1 <-  my_read_keypad_var_L0 & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_6
+	my_read_keypad_key_L0 <- 52
+	goto	L_my_read_keypad_7
+L_my_read_keypad_6:
+//ergasia_part2.c,24 :: 		else if (var.F3 == 0) key = '1';
+	STACK_1 <-  my_read_keypad_var_L0 & 8
+	STACK_0 <- 3
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_8
+	my_read_keypad_key_L0 <- 49
+L_my_read_keypad_8:
+L_my_read_keypad_7:
+L_my_read_keypad_5:
+L_my_read_keypad_3:
+//ergasia_part2.c,25 :: 		PORTB.F0 =1;    //restore RB0 to 1.
+	PORTB <-  PORTB | 1
+//ergasia_part2.c,28 :: 		PORTB.F1 = 0;
+	PORTB <-  PORTB & -3
+//ergasia_part2.c,29 :: 		delay_ms(1);
+	asm: MOVLW	3
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	150
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+//ergasia_part2.c,30 :: 		var = PORTD;
+	my_read_keypad_var_L0 <- PORTD
+//ergasia_part2.c,31 :: 		if (var.F0 == 0)      key = '0';
+	STACK_1 <-  my_read_keypad_var_L0 & 1
+	if ( STACK_1 != 0) then goto L_my_read_keypad_9
+	my_read_keypad_key_L0 <- 48
+	goto	L_my_read_keypad_10
+L_my_read_keypad_9:
+//ergasia_part2.c,32 :: 		else if (var.F1 == 0) key = '8';
+	STACK_1 <-  my_read_keypad_var_L0 & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_11
+	my_read_keypad_key_L0 <- 56
+	goto	L_my_read_keypad_12
+L_my_read_keypad_11:
+//ergasia_part2.c,33 :: 		else if (var.F2 == 0) key = '5';
+	STACK_1 <-  my_read_keypad_var_L0 & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_13
+	my_read_keypad_key_L0 <- 53
+	goto	L_my_read_keypad_14
+L_my_read_keypad_13:
+//ergasia_part2.c,34 :: 		else if (var.F3 == 0) key = '2';
+	STACK_1 <-  my_read_keypad_var_L0 & 8
+	STACK_0 <- 3
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_15
+	my_read_keypad_key_L0 <- 50
+L_my_read_keypad_15:
+L_my_read_keypad_14:
+L_my_read_keypad_12:
+L_my_read_keypad_10:
+//ergasia_part2.c,35 :: 		PORTB.F1 =1;   //restore RB1 to 1
+	PORTB <-  PORTB | 2
+//ergasia_part2.c,38 :: 		PORTB.F2 =0;
+	PORTB <-  PORTB & -5
+//ergasia_part2.c,39 :: 		delay_ms(1);
+	asm: MOVLW	3
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	150
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+//ergasia_part2.c,40 :: 		var = PORTD;
+	my_read_keypad_var_L0 <- PORTD
+//ergasia_part2.c,41 :: 		if (var.F0 == 0)      key = '>';
+	STACK_1 <-  my_read_keypad_var_L0 & 1
+	if ( STACK_1 != 0) then goto L_my_read_keypad_16
+	my_read_keypad_key_L0 <- 62
+	goto	L_my_read_keypad_17
+L_my_read_keypad_16:
+//ergasia_part2.c,42 :: 		else if (var.F1 == 0) key = '9';
+	STACK_1 <-  my_read_keypad_var_L0 & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_18
+	my_read_keypad_key_L0 <- 57
+	goto	L_my_read_keypad_19
+L_my_read_keypad_18:
+//ergasia_part2.c,43 :: 		else if (var.F2 == 0) key = '6';
+	STACK_1 <-  my_read_keypad_var_L0 & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_20
+	my_read_keypad_key_L0 <- 54
+	goto	L_my_read_keypad_21
+L_my_read_keypad_20:
+//ergasia_part2.c,44 :: 		else if (var.F3 == 0) key = '3';
+	STACK_1 <-  my_read_keypad_var_L0 & 8
+	STACK_0 <- 3
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_22
+	my_read_keypad_key_L0 <- 51
+L_my_read_keypad_22:
+L_my_read_keypad_21:
+L_my_read_keypad_19:
+L_my_read_keypad_17:
+//ergasia_part2.c,45 :: 		PORTB.F2 =1;  //restore RB2 to 1
+	PORTB <-  PORTB | 4
+//ergasia_part2.c,46 :: 		}while (key == 0);
+	if ( my_read_keypad_key_L0 = 0) then goto L_my_read_keypad_0
+L_my_read_keypad_1:
+//ergasia_part2.c,47 :: 		return key;
+	STACK_0 <- my_read_keypad_key_L0
+	return
+  end
+
+_interrupt:
+  begin
+//ergasia_part2.c,52 :: 		if(PORTC.F2 == 0){                                        //an einai kleisto to anoigw
+	STACK_1 <-  PORTC & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_interrupt_23
+//ergasia_part2.c,53 :: 		PORTC.F2 = 1;                                        //anoigei o anemistiras
+	PORTC <-  PORTC | 4
+//ergasia_part2.c,54 :: 		}else {
+	goto	L_interrupt_24
+L_interrupt_23:
+//ergasia_part2.c,55 :: 		PORTC.F2 = 0;                                         //alliws to kleinw
+	PORTC <-  PORTC & -5
+//ergasia_part2.c,56 :: 		}
+L_interrupt_24:
+//ergasia_part2.c,57 :: 		INTCON =  0b11010000;                                     //katharismos interrupt flag
+	INTCON <- 208
+  end
+
+_interrupt_low:
+  begin
+//ergasia_part2.c,62 :: 		if(INTCON3.INT1IF){                                       //otan pataw to int1 anoigei to rele1
+	if (!INTCON3) then goto L_interrupt_low_25
+//ergasia_part2.c,63 :: 		if(PORTC.F0 == 0){                                //otan einai svisto
+	STACK_1 <-  PORTC & 1
+	if ( STACK_1 != 0) then goto L_interrupt_low_26
+//ergasia_part2.c,64 :: 		PORTC.F0 =1;                                   //to anoigw
+	PORTC <-  PORTC | 1
+//ergasia_part2.c,65 :: 		}else{
+	goto	L_interrupt_low_27
+L_interrupt_low_26:
+//ergasia_part2.c,66 :: 		PORTC.F0 = 0;                                  //alliws to kleinw
+	PORTC <-  PORTC & -2
+//ergasia_part2.c,67 :: 		}
+L_interrupt_low_27:
+//ergasia_part2.c,68 :: 		}
+L_interrupt_low_25:
+//ergasia_part2.c,69 :: 		if(INTCON3.INT2IF){                                       //otan pataw to int2
+	if (!INTCON3) then goto L_interrupt_low_28
+//ergasia_part2.c,70 :: 		if(PORTC.F1 == 1){                                   //an einai kleisto to buzzer
+	STACK_1 <-  PORTC & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 1) then goto L_interrupt_low_29
+//ergasia_part2.c,71 :: 		PORTC.F1 =0;                                       //anoixe to
+	PORTC <-  PORTC & -3
+//ergasia_part2.c,72 :: 		}else {
+	goto	L_interrupt_low_30
+L_interrupt_low_29:
+//ergasia_part2.c,73 :: 		PORTC.F1=1;                                        //to ekana auto gia na kleinw to buzzer otan xanapataw int2
+	PORTC <-  PORTC | 2
+//ergasia_part2.c,74 :: 		}
+L_interrupt_low_30:
+//ergasia_part2.c,75 :: 		}
+L_interrupt_low_28:
+//ergasia_part2.c,76 :: 		INTCON3 = 0b00011000;                                     //katharismos interrupt flag
+	INTCON3 <- 24
+  end
+
+_main:
+  begin
+//ergasia_part2.c,82 :: 		int i=0x41;                                                    //se HEX to A
+	main_i_L0 <- 65
+//ergasia_part2.c,83 :: 		keypressed=my_read_keypad();
+	CALL _my_read_keypad
+//ergasia_part2.c,84 :: 		TRISB=0x0F;                                                    //gia to keypad
+	TRISB <- 15
+//ergasia_part2.c,88 :: 		TRISC =0x00;                                              //energopoiw to portc ws exodo
+	TRISC <- 0
+//ergasia_part2.c,89 :: 		PORTC.F1 = 1;                                             //thelw na einai kleisto stin arxi to buzzer gia na to anoigw patwntas to int2
+	PORTC <-  PORTC | 2
+//ergasia_part2.c,91 :: 		PORTC.F0 = 0; //otan dinw tin timi 5 apo to keypad gia na xekinisei to erwtima anoigei to rele1 enw thelw na to anoigw egw me to int1 ara to mhdenizw edw kai tha anoigei me to int1
+	PORTC <-  PORTC & -2
+//ergasia_part2.c,94 :: 		INTCON =  0b11010000;                                    //gia to interrupt 0
+	INTCON <- 208
+//ergasia_part2.c,95 :: 		INTCON3 = 0b00011000;                                    //vazw 1 sto 4o bit gia na kanw enable ektos apo to int1 kai to int2
+	INTCON3 <- 24
+//ergasia_part2.c,96 :: 		RCON =0x80;
+	RCON <- 128
+//ergasia_part2.c,98 :: 		Lcd8_Config(&PORTE, &PORTD, 2,1,0, 7,6,5,4,3,2,1,0);     //define PORT and PIN Connections
+	FARG_Lcd8_Init+0 <- 0
+	FARG_Lcd8_Init+2 <- 0
+	CALL _Lcd8_Init
+//ergasia_part2.c,99 :: 		Lcd8_Cmd(LCD_CURSOR_OFF);                                // Turn off blinking cursor
+	FARG_Lcd8_Cmd+0 <- 12
+	CALL _Lcd8_Cmd
+//ergasia_part2.c,100 :: 		Lcd8_Cmd(LCD_CLEAR);                                     // Clear screen
+	FARG_Lcd8_Cmd+0 <- 1
+	CALL _Lcd8_Cmd
+//ergasia_part2.c,102 :: 		Lcd8_Out(1, 1, "5o Erwtima");
+	FARG_LCD8_Out+0 <- 1
+	FARG_LCD8_Out+1 <- 1
+	FARG_LCD8_Out+2 <- 0
+	CALL _LCD8_Out
+//ergasia_part2.c,103 :: 		while (1){                                               //while gia na emfanizw sunexws sto LCD ta kefalaia grammata A..Z
+L_main_32:
+//ergasia_part2.c,104 :: 		Lcd8_Chr(2,5, i);
+	FARG_Lcd8_Chr+0 <- 2
+	FARG_Lcd8_Chr+1 <- 5
+	FARG_Lcd8_Chr+2 <- main_i_L0
+	CALL _Lcd8_Chr
+//ergasia_part2.c,105 :: 		i++;                                                  //A......Z
+	main_i_L0 <-  main_i_L0 + 1
+	main_i_L0 <- main_i_L0
+//ergasia_part2.c,106 :: 		if (i>0x5A) i=0x41;                                   //otan ftasei sto Z paei pali sto A
+	if ( main_i_L0 <= 90) then goto L_main_34
+	main_i_L0 <- 65
+L_main_34:
+//ergasia_part2.c,107 :: 		}
+	goto	L_main_32
+  end
+
