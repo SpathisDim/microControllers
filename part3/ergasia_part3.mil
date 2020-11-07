@@ -1,0 +1,351 @@
+_my_read_keypad:
+  begin
+//ergasia_part3.c,7 :: 		PORTD = 0xFF;      //initialize all pins in PORT D as 1
+	PORTD <- 255
+//ergasia_part3.c,8 :: 		TRISD = 0xFF;      //configure PORTD is inpout
+	TRISD <- 255
+//ergasia_part3.c,10 :: 		TRISB = 0x00;     //configure PORT B as outpout
+	TRISB <- 0
+//ergasia_part3.c,11 :: 		PORTB = 0xFF;     //set all pins of PORT B to 1;
+	PORTB <- 255
+//ergasia_part3.c,13 :: 		key =0;
+	my_read_keypad_key_L0 <- 0
+//ergasia_part3.c,15 :: 		do {     //scan continuously until a key is pressed on the keypad.
+L_my_read_keypad_0:
+//ergasia_part3.c,18 :: 		PORTB.F0 = 0;
+	PORTB <-  PORTB & -2
+//ergasia_part3.c,19 :: 		delay_ms(1);
+	asm: MOVLW	3
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	150
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+//ergasia_part3.c,20 :: 		var = PORTD;
+	my_read_keypad_var_L0 <- PORTD
+//ergasia_part3.c,21 :: 		if (var.F0 == 0)      key = '<';
+	STACK_1 <-  my_read_keypad_var_L0 & 1
+	if ( STACK_1 != 0) then goto L_my_read_keypad_2
+	my_read_keypad_key_L0 <- 60
+	goto	L_my_read_keypad_3
+L_my_read_keypad_2:
+//ergasia_part3.c,22 :: 		else if (var.F1 == 0) key = '7';
+	STACK_1 <-  my_read_keypad_var_L0 & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_4
+	my_read_keypad_key_L0 <- 55
+	goto	L_my_read_keypad_5
+L_my_read_keypad_4:
+//ergasia_part3.c,23 :: 		else if (var.F2 == 0) key = '4';
+	STACK_1 <-  my_read_keypad_var_L0 & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_6
+	my_read_keypad_key_L0 <- 52
+	goto	L_my_read_keypad_7
+L_my_read_keypad_6:
+//ergasia_part3.c,24 :: 		else if (var.F3 == 0) key = '1';
+	STACK_1 <-  my_read_keypad_var_L0 & 8
+	STACK_0 <- 3
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_8
+	my_read_keypad_key_L0 <- 49
+L_my_read_keypad_8:
+L_my_read_keypad_7:
+L_my_read_keypad_5:
+L_my_read_keypad_3:
+//ergasia_part3.c,25 :: 		PORTB.F0 =1;    //restore RB0 to 1.
+	PORTB <-  PORTB | 1
+//ergasia_part3.c,28 :: 		PORTB.F1 = 0;
+	PORTB <-  PORTB & -3
+//ergasia_part3.c,29 :: 		delay_ms(1);
+	asm: MOVLW	3
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	150
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+//ergasia_part3.c,30 :: 		var = PORTD;
+	my_read_keypad_var_L0 <- PORTD
+//ergasia_part3.c,31 :: 		if (var.F0 == 0)      key = '0';
+	STACK_1 <-  my_read_keypad_var_L0 & 1
+	if ( STACK_1 != 0) then goto L_my_read_keypad_9
+	my_read_keypad_key_L0 <- 48
+	goto	L_my_read_keypad_10
+L_my_read_keypad_9:
+//ergasia_part3.c,32 :: 		else if (var.F1 == 0) key = '8';
+	STACK_1 <-  my_read_keypad_var_L0 & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_11
+	my_read_keypad_key_L0 <- 56
+	goto	L_my_read_keypad_12
+L_my_read_keypad_11:
+//ergasia_part3.c,33 :: 		else if (var.F2 == 0) key = '5';
+	STACK_1 <-  my_read_keypad_var_L0 & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_13
+	my_read_keypad_key_L0 <- 53
+	goto	L_my_read_keypad_14
+L_my_read_keypad_13:
+//ergasia_part3.c,34 :: 		else if (var.F3 == 0) key = '2';
+	STACK_1 <-  my_read_keypad_var_L0 & 8
+	STACK_0 <- 3
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_15
+	my_read_keypad_key_L0 <- 50
+L_my_read_keypad_15:
+L_my_read_keypad_14:
+L_my_read_keypad_12:
+L_my_read_keypad_10:
+//ergasia_part3.c,35 :: 		PORTB.F1 =1;   //restore RB1 to 1
+	PORTB <-  PORTB | 2
+//ergasia_part3.c,38 :: 		PORTB.F2 =0;
+	PORTB <-  PORTB & -5
+//ergasia_part3.c,39 :: 		delay_ms(1);
+	asm: MOVLW	3
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	150
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+//ergasia_part3.c,40 :: 		var = PORTD;
+	my_read_keypad_var_L0 <- PORTD
+//ergasia_part3.c,41 :: 		if (var.F0 == 0)      key = '>';
+	STACK_1 <-  my_read_keypad_var_L0 & 1
+	if ( STACK_1 != 0) then goto L_my_read_keypad_16
+	my_read_keypad_key_L0 <- 62
+	goto	L_my_read_keypad_17
+L_my_read_keypad_16:
+//ergasia_part3.c,42 :: 		else if (var.F1 == 0) key = '9';
+	STACK_1 <-  my_read_keypad_var_L0 & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_18
+	my_read_keypad_key_L0 <- 57
+	goto	L_my_read_keypad_19
+L_my_read_keypad_18:
+//ergasia_part3.c,43 :: 		else if (var.F2 == 0) key = '6';
+	STACK_1 <-  my_read_keypad_var_L0 & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_20
+	my_read_keypad_key_L0 <- 54
+	goto	L_my_read_keypad_21
+L_my_read_keypad_20:
+//ergasia_part3.c,44 :: 		else if (var.F3 == 0) key = '3';
+	STACK_1 <-  my_read_keypad_var_L0 & 8
+	STACK_0 <- 3
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_22
+	my_read_keypad_key_L0 <- 51
+L_my_read_keypad_22:
+L_my_read_keypad_21:
+L_my_read_keypad_19:
+L_my_read_keypad_17:
+//ergasia_part3.c,45 :: 		PORTB.F2 =1;  //restore RB2 to 1
+	PORTB <-  PORTB | 4
+//ergasia_part3.c,46 :: 		} while (key == 0);
+	if ( my_read_keypad_key_L0 = 0) then goto L_my_read_keypad_0
+L_my_read_keypad_1:
+//ergasia_part3.c,48 :: 		return key;
+	STACK_0 <- my_read_keypad_key_L0
+	return
+  end
+
+_main:
+  begin
+//ergasia_part3.c,57 :: 		Lcd8_Config(&PORTE, &PORTD, 2,1,0,7,6, 5, 4, 3, 2, 1, 0); // Lcd_Init_EP5, see Autocomplete
+	FARG_Lcd8_Init+0 <- 0
+	FARG_Lcd8_Init+2 <- 0
+	CALL _Lcd8_Init
+//ergasia_part3.c,58 :: 		LCD8_Cmd(LCD_CURSOR_OFF);                                 // send command to LCD (cursor off)
+	FARG_Lcd8_Cmd+0 <- 12
+	CALL _Lcd8_Cmd
+//ergasia_part3.c,59 :: 		LCD8_Cmd(LCD_CLEAR);
+	FARG_Lcd8_Cmd+0 <- 1
+	CALL _Lcd8_Cmd
+//ergasia_part3.c,60 :: 		text="Patiste to 4 " ;
+	main_text_L0 <- 0
+//ergasia_part3.c,61 :: 		text1="Gia na xekinisei";
+	main_text1_L0 <- 0
+//ergasia_part3.c,62 :: 		LCD8_Out(1,1,text);
+	FARG_LCD8_Out+0 <- 1
+	FARG_LCD8_Out+1 <- 1
+	FARG_LCD8_Out+2 <- main_text_L0
+	CALL _LCD8_Out
+//ergasia_part3.c,63 :: 		LCD8_Out(2,1,text1);
+	FARG_LCD8_Out+0 <- 2
+	FARG_LCD8_Out+1 <- 1
+	FARG_LCD8_Out+2 <- main_text1_L0
+	CALL _LCD8_Out
+//ergasia_part3.c,65 :: 		keypressed=my_read_keypad();
+	CALL _my_read_keypad
+//ergasia_part3.c,69 :: 		Soft_I2C_Config(&PORTC, 4, 3);                           //arxikopoiw
+	FARG_Soft_I2C_Init+0 <- 0
+	CALL _Soft_I2C_Init
+//ergasia_part3.c,70 :: 		Soft_I2C_Start();                                        // Issue I2C start signal
+	CALL _Soft_I2C_Start
+//ergasia_part3.c,71 :: 		Soft_I2C_Write(0xA2);                                    // stelnw tin dieuthunsh tis EEPROM + W
+	FARG_Soft_I2C_Write+0 <- 162
+	CALL _Soft_I2C_Write
+//ergasia_part3.c,72 :: 		Soft_I2C_Write(2);                                       // Stelnw tin thesi mnimis tis eeprom pou thelw na grapsw
+	FARG_Soft_I2C_Write+0 <- 2
+	CALL _Soft_I2C_Write
+//ergasia_part3.c,73 :: 		Soft_I2C_Write('S');                                     // Send data (data to be written)
+	FARG_Soft_I2C_Write+0 <- 83
+	CALL _Soft_I2C_Write
+//ergasia_part3.c,74 :: 		Soft_I2C_Write('P');                                     // Send data (data to be written)
+	FARG_Soft_I2C_Write+0 <- 80
+	CALL _Soft_I2C_Write
+//ergasia_part3.c,75 :: 		Soft_I2C_Write('A');                                     // Send data (data to be written)
+	FARG_Soft_I2C_Write+0 <- 65
+	CALL _Soft_I2C_Write
+//ergasia_part3.c,76 :: 		Soft_I2C_Write('T');                                     // Send data (data to be written)
+	FARG_Soft_I2C_Write+0 <- 84
+	CALL _Soft_I2C_Write
+//ergasia_part3.c,77 :: 		Soft_I2C_Write('H');                                     // Send data (data to be written)
+	FARG_Soft_I2C_Write+0 <- 72
+	CALL _Soft_I2C_Write
+//ergasia_part3.c,78 :: 		Soft_I2C_Write('I');                                     // Send data (data to be written)
+	FARG_Soft_I2C_Write+0 <- 73
+	CALL _Soft_I2C_Write
+//ergasia_part3.c,79 :: 		Soft_I2C_Write('S');                                     // Send data (data to be written)
+	FARG_Soft_I2C_Write+0 <- 83
+	CALL _Soft_I2C_Write
+//ergasia_part3.c,81 :: 		Soft_I2C_Write('J');                                     // Send data (data to be written)
+	FARG_Soft_I2C_Write+0 <- 74
+	CALL _Soft_I2C_Write
+//ergasia_part3.c,82 :: 		Soft_I2C_Write('I');                                     // Send data (data to be written)
+	FARG_Soft_I2C_Write+0 <- 73
+	CALL _Soft_I2C_Write
+//ergasia_part3.c,83 :: 		Soft_I2C_Write('M');                                     // Send data (data to be written)
+	FARG_Soft_I2C_Write+0 <- 77
+	CALL _Soft_I2C_Write
+//ergasia_part3.c,84 :: 		Soft_I2C_Stop();
+	CALL _Soft_I2C_Stop
+//ergasia_part3.c,87 :: 		Soft_I2C_Config(&PORTC, 4, 3);                           //Use Port C pins 4 and 3
+	FARG_Soft_I2C_Init+0 <- 0
+	CALL _Soft_I2C_Init
+//ergasia_part3.c,88 :: 		Soft_I2C_Start();                                        // Issue I2C start signal
+	CALL _Soft_I2C_Start
+//ergasia_part3.c,89 :: 		Soft_I2C_Write(0xA2);                                    // stelnw tin dieuthunsh tis EEPROM + W
+	FARG_Soft_I2C_Write+0 <- 162
+	CALL _Soft_I2C_Write
+//ergasia_part3.c,90 :: 		Soft_I2C_Write(2);                                       // Stelnw tin thesi mnimis tis eeprom pou thelw na grapsw
+	FARG_Soft_I2C_Write+0 <- 2
+	CALL _Soft_I2C_Write
+//ergasia_part3.c,92 :: 		Soft_I2C_Start();                                        // Issue I2C start signal
+	CALL _Soft_I2C_Start
+//ergasia_part3.c,93 :: 		Soft_I2C_Write(0xA3);                                    // twra exw tin dieuthinsh ths suskeuhs alla gia read
+	FARG_Soft_I2C_Write+0 <- 163
+	CALL _Soft_I2C_Write
+//ergasia_part3.c,94 :: 		data[0] = Soft_I2C_Read(1);                              // Read data (send ACK)
+	FARG_Soft_I2C_Read+0 <- 1
+	CALL _Soft_I2C_Read
+	_data <- STACK_0
+//ergasia_part3.c,95 :: 		data[1] = Soft_I2C_Read(1);                              // Read data (send ACK)
+	FARG_Soft_I2C_Read+0 <- 1
+	CALL _Soft_I2C_Read
+	_data+1 <- STACK_0
+//ergasia_part3.c,96 :: 		data[2] = Soft_I2C_Read(1);                              // Read data (send ACK)
+	FARG_Soft_I2C_Read+0 <- 1
+	CALL _Soft_I2C_Read
+	_data+2 <- STACK_0
+//ergasia_part3.c,97 :: 		data[3] = Soft_I2C_Read(1);                              // Read data (send ACK)
+	FARG_Soft_I2C_Read+0 <- 1
+	CALL _Soft_I2C_Read
+	_data+3 <- STACK_0
+//ergasia_part3.c,98 :: 		data[4] = Soft_I2C_Read(1);                              // Read data (send ACK)
+	FARG_Soft_I2C_Read+0 <- 1
+	CALL _Soft_I2C_Read
+	_data+4 <- STACK_0
+//ergasia_part3.c,99 :: 		data[5] = Soft_I2C_Read(1);                              // Read data (send ACK)
+	FARG_Soft_I2C_Read+0 <- 1
+	CALL _Soft_I2C_Read
+	_data+5 <- STACK_0
+//ergasia_part3.c,100 :: 		data[6] = Soft_I2C_Read(1);                              // Read data (send ACK)
+	FARG_Soft_I2C_Read+0 <- 1
+	CALL _Soft_I2C_Read
+	_data+6 <- STACK_0
+//ergasia_part3.c,101 :: 		data[7] = Soft_I2C_Read(1);                              // Read data (send ACK)
+	FARG_Soft_I2C_Read+0 <- 1
+	CALL _Soft_I2C_Read
+	_data+7 <- STACK_0
+//ergasia_part3.c,102 :: 		data[8] = Soft_I2C_Read(1);                              // Read data (send ACK)
+	FARG_Soft_I2C_Read+0 <- 1
+	CALL _Soft_I2C_Read
+	_data+8 <- STACK_0
+//ergasia_part3.c,103 :: 		data[9] = Soft_I2C_Read(0);                              // Read data (NO ACK)
+	FARG_Soft_I2C_Read+0 <- 0
+	CALL _Soft_I2C_Read
+	_data+9 <- STACK_0
+//ergasia_part3.c,104 :: 		Soft_I2C_Stop();
+	CALL _Soft_I2C_Stop
+//ergasia_part3.c,107 :: 		Usart_Init(9600);
+	SPBRG <- 51
+	asm: BSF	TXSTA, BRGH
+	CALL _Usart_Init
+//ergasia_part3.c,122 :: 		Usart_Write(data[0]);                                  //tupwnei to S
+	FARG_Usart_Write+0 <- _data
+	CALL _Usart_Write
+//ergasia_part3.c,123 :: 		Usart_Write(data[1]);                                  //tupwnei to P
+	FARG_Usart_Write+0 <- _data+1
+	CALL _Usart_Write
+//ergasia_part3.c,124 :: 		Usart_Write(data[2]);                                  //tupwnei to A
+	FARG_Usart_Write+0 <- _data+2
+	CALL _Usart_Write
+//ergasia_part3.c,125 :: 		Usart_Write(data[3]);
+	FARG_Usart_Write+0 <- _data+3
+	CALL _Usart_Write
+//ergasia_part3.c,126 :: 		Usart_Write(data[4]);
+	FARG_Usart_Write+0 <- _data+4
+	CALL _Usart_Write
+//ergasia_part3.c,127 :: 		Usart_Write(data[5]);
+	FARG_Usart_Write+0 <- _data+5
+	CALL _Usart_Write
+//ergasia_part3.c,128 :: 		Usart_Write(data[6]);
+	FARG_Usart_Write+0 <- _data+6
+	CALL _Usart_Write
+//ergasia_part3.c,129 :: 		Usart_Write(' ');
+	FARG_Usart_Write+0 <- 32
+	CALL _Usart_Write
+//ergasia_part3.c,130 :: 		Usart_Write(data[7]);
+	FARG_Usart_Write+0 <- _data+7
+	CALL _Usart_Write
+//ergasia_part3.c,131 :: 		Usart_Write(data[8]);
+	FARG_Usart_Write+0 <- _data+8
+	CALL _Usart_Write
+//ergasia_part3.c,132 :: 		Usart_Write(data[9]);
+	FARG_Usart_Write+0 <- _data+9
+	CALL _Usart_Write
+//ergasia_part3.c,133 :: 		}
+L_main_23:
+  end
+
