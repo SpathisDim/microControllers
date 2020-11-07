@@ -1,0 +1,598 @@
+_my_read_keypad:
+  begin
+//ergasia_part1.c,21 :: 		PORTD = 0xFF;      //arxikopoiw ola ta podarakia tou D sto 1
+	PORTD <- 255
+//ergasia_part1.c,22 :: 		TRISD = 0xFF;      //kanw to portD ws eisodo
+	TRISD <- 255
+//ergasia_part1.c,24 :: 		TRISB = 0x00;     //kanw to portB ws eisodo
+	TRISB <- 0
+//ergasia_part1.c,25 :: 		PORTB = 0xFF;     //arxikopoiw ola ta podarakia tou B sto 1
+	PORTB <- 255
+//ergasia_part1.c,27 :: 		key =0;
+	my_read_keypad_key_L0 <- 0
+//ergasia_part1.c,29 :: 		do {    //scan continuously until a key is pressed on the keypad.
+L_my_read_keypad_0:
+//ergasia_part1.c,32 :: 		PORTB.F0 = 0;
+	PORTB <-  PORTB & -2
+//ergasia_part1.c,33 :: 		delay_ms(1);
+	asm: MOVLW	3
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	150
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+//ergasia_part1.c,34 :: 		var = PORTD;
+	my_read_keypad_var_L0 <- PORTD
+//ergasia_part1.c,35 :: 		if (var.F0 == 0)      key = '<';
+	STACK_1 <-  my_read_keypad_var_L0 & 1
+	if ( STACK_1 != 0) then goto L_my_read_keypad_2
+	my_read_keypad_key_L0 <- 60
+	goto	L_my_read_keypad_3
+L_my_read_keypad_2:
+//ergasia_part1.c,36 :: 		else if (var.F1 == 0) key = '7';
+	STACK_1 <-  my_read_keypad_var_L0 & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_4
+	my_read_keypad_key_L0 <- 55
+	goto	L_my_read_keypad_5
+L_my_read_keypad_4:
+//ergasia_part1.c,37 :: 		else if (var.F2 == 0) key = '4';
+	STACK_1 <-  my_read_keypad_var_L0 & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_6
+	my_read_keypad_key_L0 <- 52
+	goto	L_my_read_keypad_7
+L_my_read_keypad_6:
+//ergasia_part1.c,38 :: 		else if (var.F3 == 0) key = '1';
+	STACK_1 <-  my_read_keypad_var_L0 & 8
+	STACK_0 <- 3
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_8
+	my_read_keypad_key_L0 <- 49
+L_my_read_keypad_8:
+L_my_read_keypad_7:
+L_my_read_keypad_5:
+L_my_read_keypad_3:
+//ergasia_part1.c,39 :: 		PORTB.F0 =1;    //restore RB0 to 1.
+	PORTB <-  PORTB | 1
+//ergasia_part1.c,42 :: 		PORTB.F1 = 0;
+	PORTB <-  PORTB & -3
+//ergasia_part1.c,43 :: 		delay_ms(1);
+	asm: MOVLW	3
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	150
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+//ergasia_part1.c,44 :: 		var = PORTD;
+	my_read_keypad_var_L0 <- PORTD
+//ergasia_part1.c,45 :: 		if (var.F0 == 0)      key = '0';
+	STACK_1 <-  my_read_keypad_var_L0 & 1
+	if ( STACK_1 != 0) then goto L_my_read_keypad_9
+	my_read_keypad_key_L0 <- 48
+	goto	L_my_read_keypad_10
+L_my_read_keypad_9:
+//ergasia_part1.c,46 :: 		else if (var.F1 == 0) key = '8';
+	STACK_1 <-  my_read_keypad_var_L0 & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_11
+	my_read_keypad_key_L0 <- 56
+	goto	L_my_read_keypad_12
+L_my_read_keypad_11:
+//ergasia_part1.c,47 :: 		else if (var.F2 == 0) key = '5';
+	STACK_1 <-  my_read_keypad_var_L0 & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_13
+	my_read_keypad_key_L0 <- 53
+	goto	L_my_read_keypad_14
+L_my_read_keypad_13:
+//ergasia_part1.c,48 :: 		else if (var.F3 == 0) key = '2';
+	STACK_1 <-  my_read_keypad_var_L0 & 8
+	STACK_0 <- 3
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_15
+	my_read_keypad_key_L0 <- 50
+L_my_read_keypad_15:
+L_my_read_keypad_14:
+L_my_read_keypad_12:
+L_my_read_keypad_10:
+//ergasia_part1.c,49 :: 		PORTB.F1 =1;   //restore RB1 to 1
+	PORTB <-  PORTB | 2
+//ergasia_part1.c,52 :: 		PORTB.F2 =0;
+	PORTB <-  PORTB & -5
+//ergasia_part1.c,53 :: 		delay_ms(1);
+	asm: MOVLW	3
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	150
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+//ergasia_part1.c,54 :: 		var = PORTD;
+	my_read_keypad_var_L0 <- PORTD
+//ergasia_part1.c,55 :: 		if (var.F0 == 0)      key = '>';
+	STACK_1 <-  my_read_keypad_var_L0 & 1
+	if ( STACK_1 != 0) then goto L_my_read_keypad_16
+	my_read_keypad_key_L0 <- 62
+	goto	L_my_read_keypad_17
+L_my_read_keypad_16:
+//ergasia_part1.c,56 :: 		else if (var.F1 == 0) key = '9';
+	STACK_1 <-  my_read_keypad_var_L0 & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_18
+	my_read_keypad_key_L0 <- 57
+	goto	L_my_read_keypad_19
+L_my_read_keypad_18:
+//ergasia_part1.c,57 :: 		else if (var.F2 == 0) key = '6';
+	STACK_1 <-  my_read_keypad_var_L0 & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_20
+	my_read_keypad_key_L0 <- 54
+	goto	L_my_read_keypad_21
+L_my_read_keypad_20:
+//ergasia_part1.c,58 :: 		else if (var.F3 == 0) key = '3';
+	STACK_1 <-  my_read_keypad_var_L0 & 8
+	STACK_0 <- 3
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 0) then goto L_my_read_keypad_22
+	my_read_keypad_key_L0 <- 51
+L_my_read_keypad_22:
+L_my_read_keypad_21:
+L_my_read_keypad_19:
+L_my_read_keypad_17:
+//ergasia_part1.c,59 :: 		PORTB.F2 =1;  //restore RB2 to 1
+	PORTB <-  PORTB | 4
+//ergasia_part1.c,60 :: 		}while (key == 0);
+	if ( my_read_keypad_key_L0 = 0) then goto L_my_read_keypad_0
+L_my_read_keypad_1:
+//ergasia_part1.c,61 :: 		return key;
+	STACK_0 <- my_read_keypad_key_L0
+	return
+  end
+
+_date_Time:
+  begin
+//ergasia_part1.c,73 :: 		Soft_I2C_Config(&PORTC,4,3);           //arxikopoiw
+	FARG_Soft_I2C_Init+0 <- 0
+	CALL _Soft_I2C_Init
+//ergasia_part1.c,74 :: 		Soft_I2C_Start();
+	CALL _Soft_I2C_Start
+//ergasia_part1.c,75 :: 		Soft_I2C_Write(0xD0);                  //stelnw tin dieuthinsh ths EEPROM+W
+	FARG_Soft_I2C_Write+0 <- 208
+	CALL _Soft_I2C_Write
+//ergasia_part1.c,76 :: 		Soft_I2C_Write(0);                     //thesi mnhmhs pou thelw na diavasw ((0)ta seconds diladi)
+	FARG_Soft_I2C_Write+0 <- 0
+	CALL _Soft_I2C_Write
+//ergasia_part1.c,78 :: 		Soft_I2C_Start();                      //Issue I2C start signal
+	CALL _Soft_I2C_Start
+//ergasia_part1.c,79 :: 		Soft_I2C_Write(0xD1);                  //Send byte(device address +R)
+	FARG_Soft_I2C_Write+0 <- 209
+	CALL _Soft_I2C_Write
+//ergasia_part1.c,80 :: 		temp=Soft_I2C_Read(0);                 //Read data (NO ACK)  thesi mnimis 0
+	FARG_Soft_I2C_Read+0 <- 0
+	CALL _Soft_I2C_Read
+	date_Time_temp_L0 <- STACK_0
+//ergasia_part1.c,81 :: 		temp1=Soft_I2C_Read(0);                //diavazw thesi mnimis 1
+	FARG_Soft_I2C_Read+0 <- 0
+	CALL _Soft_I2C_Read
+	date_Time_temp1_L0 <- STACK_0
+//ergasia_part1.c,82 :: 		temp2=Soft_I2C_Read(0);                //diavazw thesi mnimis 2
+	FARG_Soft_I2C_Read+0 <- 0
+	CALL _Soft_I2C_Read
+	date_Time_temp2_L0 <- STACK_0
+//ergasia_part1.c,83 :: 		temp3=Soft_I2C_Read(0);                //diavazw thesi mnimis 3
+	FARG_Soft_I2C_Read+0 <- 0
+	CALL _Soft_I2C_Read
+	date_Time_temp3_L0 <- STACK_0
+//ergasia_part1.c,84 :: 		temp4=Soft_I2C_Read(0);                //diavazw thesi mnimis 4
+	FARG_Soft_I2C_Read+0 <- 0
+	CALL _Soft_I2C_Read
+	date_Time_temp4_L0 <- STACK_0
+//ergasia_part1.c,85 :: 		temp5=Soft_I2C_Read(0);                //diavazw thesi mnimis 5
+	FARG_Soft_I2C_Read+0 <- 0
+	CALL _Soft_I2C_Read
+	date_Time_temp5_L0 <- STACK_0
+//ergasia_part1.c,86 :: 		temp6=Soft_I2C_Read(0);                //diavazw thesi mnimis 6
+	FARG_Soft_I2C_Read+0 <- 0
+	CALL _Soft_I2C_Read
+	date_Time_temp6_L0 <- STACK_0
+//ergasia_part1.c,87 :: 		Soft_I2C_Stop();
+	CALL _Soft_I2C_Stop
+//ergasia_part1.c,90 :: 		seconds[0]=((temp& 0X70)>>4)+0x30;      //olisthisi gia na einai stoixismena kai ta kanw +0x30 kai to metatrepw se ascii
+	date_Time_seconds_L0 <-  date_Time_temp_L0 & 112
+	STACK_0 <- 4
+	date_Time_seconds_L0 <-  date_Time_seconds_L0 shr STACK_0
+	date_Time_seconds_L0 <-  date_Time_seconds_L0 + 48  [Optimized To Dest]
+	date_Time_seconds_L0 <- date_Time_seconds_L0
+//ergasia_part1.c,91 :: 		seconds[1]=(temp & 0x0F) + 0x30;
+	date_Time_seconds_L0+1 <-  date_Time_temp_L0 & 15
+	date_Time_seconds_L0+1 <-  date_Time_seconds_L0+1 + 48  [Optimized To Dest]
+	date_Time_seconds_L0+1 <- date_Time_seconds_L0+1
+//ergasia_part1.c,95 :: 		minutes[0]=((temp1 & 0X70)>>4)+0x30;
+	date_Time_minutes_L0 <-  date_Time_temp1_L0 & 112
+	STACK_0 <- 4
+	date_Time_minutes_L0 <-  date_Time_minutes_L0 shr STACK_0
+	date_Time_minutes_L0 <-  date_Time_minutes_L0 + 48  [Optimized To Dest]
+	date_Time_minutes_L0 <- date_Time_minutes_L0
+//ergasia_part1.c,96 :: 		minutes[1]=(temp1 & 0x0F) + 0x30;
+	date_Time_minutes_L0+1 <-  date_Time_temp1_L0 & 15
+	date_Time_minutes_L0+1 <-  date_Time_minutes_L0+1 + 48  [Optimized To Dest]
+	date_Time_minutes_L0+1 <- date_Time_minutes_L0+1
+//ergasia_part1.c,99 :: 		hours[0]=((temp2 & 0x70)>>4)+0x30;
+	date_Time_hours_L0 <-  date_Time_temp2_L0 & 112
+	STACK_0 <- 4
+	date_Time_hours_L0 <-  date_Time_hours_L0 shr STACK_0
+	date_Time_hours_L0 <-  date_Time_hours_L0 + 48  [Optimized To Dest]
+	date_Time_hours_L0 <- date_Time_hours_L0
+//ergasia_part1.c,101 :: 		hours[1]=(temp2 & 0x0F)+0x30;
+	date_Time_hours_L0+1 <-  date_Time_temp2_L0 & 15
+	date_Time_hours_L0+1 <-  date_Time_hours_L0+1 + 48  [Optimized To Dest]
+	date_Time_hours_L0+1 <- date_Time_hours_L0+1
+//ergasia_part1.c,105 :: 		day[0]=((temp3 & 0x70)>>4) +0x30;
+	date_Time_day_L0 <-  date_Time_temp3_L0 & 112
+	STACK_0 <- 4
+	date_Time_day_L0 <-  date_Time_day_L0 shr STACK_0
+	date_Time_day_L0 <-  date_Time_day_L0 + 48  [Optimized To Dest]
+	date_Time_day_L0 <- date_Time_day_L0
+//ergasia_part1.c,108 :: 		date[0]=((temp4 & 0x30)>>4)+0x30;
+	date_Time_date_L0 <-  date_Time_temp4_L0 & 48
+	STACK_0 <- 4
+	date_Time_date_L0 <-  date_Time_date_L0 shr STACK_0
+	date_Time_date_L0 <-  date_Time_date_L0 + 48  [Optimized To Dest]
+	date_Time_date_L0 <- date_Time_date_L0
+//ergasia_part1.c,109 :: 		date[1]=((temp4 & 0x0F))+0x30;
+	date_Time_date_L0+1 <-  date_Time_temp4_L0 & 15
+	date_Time_date_L0+1 <-  date_Time_date_L0+1 + 48  [Optimized To Dest]
+	date_Time_date_L0+1 <- date_Time_date_L0+1
+//ergasia_part1.c,111 :: 		month[0]=((temp5 & 0x10)>>4)+0x30;
+	date_Time_month_L0 <-  date_Time_temp5_L0 & 16
+	STACK_0 <- 4
+	date_Time_month_L0 <-  date_Time_month_L0 shr STACK_0
+	date_Time_month_L0 <-  date_Time_month_L0 + 48  [Optimized To Dest]
+	date_Time_month_L0 <- date_Time_month_L0
+//ergasia_part1.c,112 :: 		month[1]=(temp5 & 0x0F)+0x30;
+	date_Time_month_L0+1 <-  date_Time_temp5_L0 & 15
+	date_Time_month_L0+1 <-  date_Time_month_L0+1 + 48  [Optimized To Dest]
+	date_Time_month_L0+1 <- date_Time_month_L0+1
+//ergasia_part1.c,114 :: 		year[0]=((temp6 & 0xF0)>>4)+0x30;
+	date_Time_year_L0 <-  date_Time_temp6_L0 & 240
+	STACK_0 <- 4
+	date_Time_year_L0 <-  date_Time_year_L0 shr STACK_0
+	date_Time_year_L0 <-  date_Time_year_L0 + 48  [Optimized To Dest]
+	date_Time_year_L0 <- date_Time_year_L0
+//ergasia_part1.c,115 :: 		year[1]=(temp6 & 0x0F)+0x30;
+	date_Time_year_L0+1 <-  date_Time_temp6_L0 & 15
+	date_Time_year_L0+1 <-  date_Time_year_L0+1 + 48  [Optimized To Dest]
+	date_Time_year_L0+1 <- date_Time_year_L0+1
+//ergasia_part1.c,117 :: 		Lcd8_Config(&PORTE, &PORTD, 2,1,0,7,6, 5, 4, 3, 2, 1, 0); // Lcd_Init_EP5, see Autocomplete
+	FARG_Lcd8_Init+0 <- 0
+	FARG_Lcd8_Init+2 <- 0
+	CALL _Lcd8_Init
+//ergasia_part1.c,118 :: 		LCD8_Cmd(LCD_CURSOR_OFF);                  // send command to LCD (cursor off)
+	FARG_Lcd8_Cmd+0 <- 12
+	CALL _Lcd8_Cmd
+//ergasia_part1.c,119 :: 		LCD8_Cmd(LCD_CLEAR);                       // send command  to LCD (clear LCD)
+	FARG_Lcd8_Cmd+0 <- 1
+	CALL _Lcd8_Cmd
+//ergasia_part1.c,121 :: 		LCD8_Chr(1,1,hours[0]);                    //wra
+	FARG_Lcd8_Chr+0 <- 1
+	FARG_Lcd8_Chr+1 <- 1
+	FARG_Lcd8_Chr+2 <- date_Time_hours_L0
+	CALL _Lcd8_Chr
+//ergasia_part1.c,122 :: 		LCD8_Chr(1,2,hours[1]);
+	FARG_Lcd8_Chr+0 <- 1
+	FARG_Lcd8_Chr+1 <- 2
+	FARG_Lcd8_Chr+2 <- date_Time_hours_L0+1
+	CALL _Lcd8_Chr
+//ergasia_part1.c,124 :: 		LCD8_Out(1,3,":");
+	FARG_LCD8_Out+0 <- 1
+	FARG_LCD8_Out+1 <- 3
+	FARG_LCD8_Out+2 <- 0
+	CALL _LCD8_Out
+//ergasia_part1.c,125 :: 		LCD8_Chr(1,4,minutes[0]);                  //lepta
+	FARG_Lcd8_Chr+0 <- 1
+	FARG_Lcd8_Chr+1 <- 4
+	FARG_Lcd8_Chr+2 <- date_Time_minutes_L0
+	CALL _Lcd8_Chr
+//ergasia_part1.c,126 :: 		LCD8_Chr(1,5,minutes[1]);
+	FARG_Lcd8_Chr+0 <- 1
+	FARG_Lcd8_Chr+1 <- 5
+	FARG_Lcd8_Chr+2 <- date_Time_minutes_L0+1
+	CALL _Lcd8_Chr
+//ergasia_part1.c,128 :: 		LCD8_Out(1,6,":");
+	FARG_LCD8_Out+0 <- 1
+	FARG_LCD8_Out+1 <- 6
+	FARG_LCD8_Out+2 <- 0
+	CALL _LCD8_Out
+//ergasia_part1.c,129 :: 		LCD8_Chr(1,7,seconds[0]);                  //deuterolepta
+	FARG_Lcd8_Chr+0 <- 1
+	FARG_Lcd8_Chr+1 <- 7
+	FARG_Lcd8_Chr+2 <- date_Time_seconds_L0
+	CALL _Lcd8_Chr
+//ergasia_part1.c,130 :: 		LCD8_Chr(1,8,seconds[1]);
+	FARG_Lcd8_Chr+0 <- 1
+	FARG_Lcd8_Chr+1 <- 8
+	FARG_Lcd8_Chr+2 <- date_Time_seconds_L0+1
+	CALL _Lcd8_Chr
+//ergasia_part1.c,133 :: 		LCD8_Chr(2,1,date[0]);
+	FARG_Lcd8_Chr+0 <- 2
+	FARG_Lcd8_Chr+1 <- 1
+	FARG_Lcd8_Chr+2 <- date_Time_date_L0
+	CALL _Lcd8_Chr
+//ergasia_part1.c,134 :: 		LCD8_Chr(2,2,date[1]);
+	FARG_Lcd8_Chr+0 <- 2
+	FARG_Lcd8_Chr+1 <- 2
+	FARG_Lcd8_Chr+2 <- date_Time_date_L0+1
+	CALL _Lcd8_Chr
+//ergasia_part1.c,136 :: 		LCD8_Out(2,3,"/");
+	FARG_LCD8_Out+0 <- 2
+	FARG_LCD8_Out+1 <- 3
+	FARG_LCD8_Out+2 <- 0
+	CALL _LCD8_Out
+//ergasia_part1.c,137 :: 		LCD8_Chr(2,4,month[0]);                   //arithmos mhna
+	FARG_Lcd8_Chr+0 <- 2
+	FARG_Lcd8_Chr+1 <- 4
+	FARG_Lcd8_Chr+2 <- date_Time_month_L0
+	CALL _Lcd8_Chr
+//ergasia_part1.c,138 :: 		LCD8_Chr(2,5,month[1]);
+	FARG_Lcd8_Chr+0 <- 2
+	FARG_Lcd8_Chr+1 <- 5
+	FARG_Lcd8_Chr+2 <- date_Time_month_L0+1
+	CALL _Lcd8_Chr
+//ergasia_part1.c,140 :: 		LCD8_Out(2,6,"/");
+	FARG_LCD8_Out+0 <- 2
+	FARG_LCD8_Out+1 <- 6
+	FARG_LCD8_Out+2 <- 0
+	CALL _LCD8_Out
+//ergasia_part1.c,141 :: 		LCD8_Chr(2,7,year[0]);                    //xronia
+	FARG_Lcd8_Chr+0 <- 2
+	FARG_Lcd8_Chr+1 <- 7
+	FARG_Lcd8_Chr+2 <- date_Time_year_L0
+	CALL _Lcd8_Chr
+//ergasia_part1.c,142 :: 		LCD8_Chr(2,8,year[1]);
+	FARG_Lcd8_Chr+0 <- 2
+	FARG_Lcd8_Chr+1 <- 8
+	FARG_Lcd8_Chr+2 <- date_Time_year_L0+1
+	CALL _Lcd8_Chr
+  end
+
+_stepMotor:
+  begin
+//ergasia_part1.c,148 :: 		TRISB = 0b00001111;                                //epeidh xrhsimopoiw mono 4 podarakia arxikopoiw ta 4 ws eisodoi ta alla 4 ws exodoi
+	TRISB <- 15
+//ergasia_part1.c,149 :: 		PORTB =0x00;
+	PORTB <- 0
+//ergasia_part1.c,151 :: 		while(1){                                         //to syndew sta rb4 rb5 rb6 rb7
+L_stepMotor_23:
+//ergasia_part1.c,152 :: 		PORTB.F4 =0;
+	PORTB <-  PORTB & -17
+//ergasia_part1.c,153 :: 		PORTB.F5 =1;
+	PORTB <-  PORTB | 32
+//ergasia_part1.c,154 :: 		PORTB.F6 =0;
+	PORTB <-  PORTB & -65
+//ergasia_part1.c,155 :: 		PORTB.F7 =1;
+	PORTB <-  PORTB | 128
+//ergasia_part1.c,157 :: 		Vdelay_ms(taxuthta_peristrofis);
+	FARG_VDelay_ms+0 <- FARG_stepMotor+0
+	CALL _VDelay_ms
+//ergasia_part1.c,159 :: 		PORTB.F4 =1;
+	PORTB <-  PORTB | 16
+//ergasia_part1.c,160 :: 		PORTB.F5 =0;
+	PORTB <-  PORTB & -33
+//ergasia_part1.c,161 :: 		PORTB.F6 =0;
+	PORTB <-  PORTB & -65
+//ergasia_part1.c,162 :: 		PORTB.F7 =1;
+	PORTB <-  PORTB | 128
+//ergasia_part1.c,164 :: 		Vdelay_ms(taxuthta_peristrofis);
+	FARG_VDelay_ms+0 <- FARG_stepMotor+0
+	CALL _VDelay_ms
+//ergasia_part1.c,166 :: 		PORTB.F4 =1;
+	PORTB <-  PORTB | 16
+//ergasia_part1.c,167 :: 		PORTB.F5 =0;
+	PORTB <-  PORTB & -33
+//ergasia_part1.c,168 :: 		PORTB.F6 =1;
+	PORTB <-  PORTB | 64
+//ergasia_part1.c,169 :: 		PORTB.F7 =0;
+	PORTB <-  PORTB & -129
+//ergasia_part1.c,171 :: 		Vdelay_ms(taxuthta_peristrofis);
+	FARG_VDelay_ms+0 <- FARG_stepMotor+0
+	CALL _VDelay_ms
+//ergasia_part1.c,173 :: 		PORTB.F4 =0;
+	PORTB <-  PORTB & -17
+//ergasia_part1.c,174 :: 		PORTB.F5 =1;
+	PORTB <-  PORTB | 32
+//ergasia_part1.c,175 :: 		PORTB.F6 =1;
+	PORTB <-  PORTB | 64
+//ergasia_part1.c,176 :: 		PORTB.F7 =0;
+	PORTB <-  PORTB & -129
+//ergasia_part1.c,178 :: 		Vdelay_ms(taxuthta_peristrofis);            //1 strofi ana 3sec
+	FARG_VDelay_ms+0 <- FARG_stepMotor+0
+	CALL _VDelay_ms
+//ergasia_part1.c,179 :: 		}
+	goto	L_stepMotor_23
+  end
+
+_adc_and_servo:
+  begin
+//ergasia_part1.c,189 :: 		ADCON0     = 1;
+	ADCON0 <- 1
+//ergasia_part1.c,190 :: 		ADCON1     = 0x01;                                // configure VDD as Vref, PORTA pins as analog, PORTB pins as digital
+	ADCON1 <- 1
+//ergasia_part1.c,192 :: 		Lcd8_Config(&PORTE, &PORTD, 2,1,0, 7,6,5,4,3,2,1,0);
+	FARG_Lcd8_Init+0 <- 0
+	FARG_Lcd8_Init+2 <- 0
+	CALL _Lcd8_Init
+//ergasia_part1.c,193 :: 		Lcd8_Cmd(LCD_CURSOR_OFF);                           // Turn off cursor
+	FARG_Lcd8_Cmd+0 <- 12
+	CALL _Lcd8_Cmd
+//ergasia_part1.c,194 :: 		Lcd8_Cmd(LCD_CLEAR);                                 // Clear screen
+	FARG_Lcd8_Cmd+0 <- 1
+	CALL _Lcd8_Cmd
+//ergasia_part1.c,195 :: 		Lcd8_Out(1, 1, "ADC Value:");                        // Print text on LCD
+	FARG_LCD8_Out+0 <- 1
+	FARG_LCD8_Out+1 <- 1
+	FARG_LCD8_Out+2 <- 0
+	CALL _LCD8_Out
+//ergasia_part1.c,197 :: 		while (1) {
+L_adc_and_servo_25:
+//ergasia_part1.c,199 :: 		adc_rd  = ADC_read(0)/4;                     // get ADC value from first channel
+	FARG_Adc_Read+0 <- 0
+	CALL _Adc_Read
+	STACK_0 <-  STACK_0 / 4
+	adc_and_servo_adc_rd_L0 <- STACK_0
+//ergasia_part1.c,201 :: 		wordToStr(adc_rd, text);
+	FARG_WordToStr+0 <- STACK_0
+	FARG_WordToStr+2 <- 0
+	CALL _WordToStr
+//ergasia_part1.c,202 :: 		Lcd8_Out(2,4, text);
+	FARG_LCD8_Out+0 <- 2
+	FARG_LCD8_Out+1 <- 4
+	FARG_LCD8_Out+2 <- 0
+	CALL _LCD8_Out
+//ergasia_part1.c,203 :: 		delay_ms(20);
+	asm: MOVLW	52
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	207
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: nop
+//ergasia_part1.c,205 :: 		speed_tester=adc_rd;                         //dinw tin timi apo to potensiometro gia na tin xrhsimopoihsw ston servokinitira
+	adc_and_servo_speed_tester_L0 <- adc_and_servo_adc_rd_L0
+//ergasia_part1.c,207 :: 		PORTC.F2 = 0xFF;                             // Set PORTC.2 to 1
+	PORTC <-  PORTC | 1020
+//ergasia_part1.c,208 :: 		TRISC.F2 = 0x00;                             // PORTC.2 exodos
+	TRISC <-  TRISC & -5
+//ergasia_part1.c,210 :: 		Pwm_Init(500);                               // Initialize PWM module 500Hz ->2ms period
+	asm: BSF	T2CON, T2CKPS0
+	asm: BSF	T2CON, T2CKPS1
+	asm: MOVLW	249
+	asm: MOVWF	PR2
+	CALL _PWM_Init
+//ergasia_part1.c,212 :: 		Pwm_Start();                                 // Start PWM
+	CALL _PWM_Start
+//ergasia_part1.c,213 :: 		Pwm_Change_Duty(speed_tester);               // set speed apo 0 ews 255
+	FARG_PWM_Change_Duty+0 <- adc_and_servo_speed_tester_L0
+	CALL _PWM_Change_Duty
+//ergasia_part1.c,215 :: 		delay_ms(300);
+	asm: MOVLW	4
+	asm: MOVWF	STACK_12
+	asm: MOVLW	255
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_12,F
+	asm: GOTO	$+2
+	asm: GOTO	$+8
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: GOTO	$-9
+	asm: MOVLW	16
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	38
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+//ergasia_part1.c,216 :: 		WordtoStr(speed_tester, text);
+	FARG_WordToStr+0 <- adc_and_servo_speed_tester_L0
+	FARG_WordToStr+2 <- 0
+	CALL _WordToStr
+//ergasia_part1.c,217 :: 		LCD8_Out(1,8,text);
+	FARG_LCD8_Out+0 <- 1
+	FARG_LCD8_Out+1 <- 8
+	FARG_LCD8_Out+2 <- 0
+	CALL _LCD8_Out
+//ergasia_part1.c,218 :: 		LCD8_Out(1,13,"/255");
+	FARG_LCD8_Out+0 <- 1
+	FARG_LCD8_Out+1 <- 13
+	FARG_LCD8_Out+2 <- 0
+	CALL _LCD8_Out
+//ergasia_part1.c,219 :: 		}
+	goto	L_adc_and_servo_25
+  end
+
+_main:
+  begin
+//ergasia_part1.c,225 :: 		taxuthta_peristrofis=7;                                  //gia tin taxitita tou stepper
+	main_taxuthta_peristrofis_L0 <- 7
+//ergasia_part1.c,227 :: 		keypressed = my_read_keypad();
+	CALL _my_read_keypad
+	main_keypressed_L0 <- STACK_0
+//ergasia_part1.c,229 :: 		TRISD = 0x00;                                           //Define PORTD to operate as outpout
+	TRISD <- 0
+//ergasia_part1.c,230 :: 		TRISA = 0xFB;                                           // Define PORTA pin 2 as output.
+	TRISA <- 251
+//ergasia_part1.c,232 :: 		if(keypressed=='1'){                                    //otan patisw to koubi 1 kalw tin sunartisi date_time pou tha mas deixei sto lcd tin wra kai tin hmeromhni
+	if ( STACK_0 != 49) then goto L_main_27
+//ergasia_part1.c,233 :: 		date_time();
+	CALL _date_Time
+//ergasia_part1.c,234 :: 		}
+	goto	L_main_28
+L_main_27:
+//ergasia_part1.c,235 :: 		else if(keypressed=='2'){                              //patwntas to 2 energopoieitai o vimatikos kinitiras
+	if ( main_keypressed_L0 != 50) then goto L_main_29
+//ergasia_part1.c,236 :: 		stepMotor(taxuthta_peristrofis);                    //synartisi gia ton vimatiko kinitira
+	FARG_stepMotor+0 <- main_taxuthta_peristrofis_L0
+	CALL _stepMotor
+//ergasia_part1.c,237 :: 		}
+	goto	L_main_30
+L_main_29:
+//ergasia_part1.c,238 :: 		else if(keypressed=='3'){                              //otan patisw to 3  xekinaei o servokinitiras
+	if ( main_keypressed_L0 != 51) then goto L_main_31
+//ergasia_part1.c,239 :: 		adc_and_servo();                                    //kalw tin sunartisi
+	CALL _adc_and_servo
+//ergasia_part1.c,240 :: 		}
+L_main_31:
+L_main_30:
+L_main_28:
+  end
+
