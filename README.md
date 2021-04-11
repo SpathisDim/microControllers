@@ -12,3 +12,8 @@ Part2<br>
 <br>
 Part3<br>
 (I use Interrupts to test the operation of peripherals while the main program will perform another function.)
+
+<br>![Screenshot_6](https://user-images.githubusercontent.com/74098652/114323128-88262680-9b2c-11eb-94e2-291e16a4c854.png)
+<br>
+<br>![Screenshot_7](https://user-images.githubusercontent.com/74098652/114323133-8a888080-9b2c-11eb-8fac-4e5775615d9a.png)
+
